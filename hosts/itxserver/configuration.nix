@@ -67,7 +67,9 @@
   environment.systemPackages = with pkgs; [
     btop
     curl
+    gcc
     git
+    gnumake
     nixfmt-rfc-style
     tree
     vim
@@ -92,6 +94,7 @@
     fail2ban = {
       enable = true;
     };
+    envfs.enable = true;
   };
 
   programs = {
