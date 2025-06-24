@@ -17,7 +17,6 @@
       fzf-zsh
       git
       lazygit
-      neovim
       python3
       starship
       syncthing

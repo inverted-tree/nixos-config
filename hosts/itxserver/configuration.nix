@@ -3,11 +3,26 @@
   lib,
   pkgs,
   ...
-}:
+}@args:
+let
+  inherit (args) inputs;
+in
 {
   imports = [
+    # The hardware-dependent options
     ./hardware-configuration.nix
+    # All (shared/non-specific) users
     ../../users/lukas.nix
+    ../../users/docker.nix
+    # All custom modules
+    ../../modules/containers/stump.nix
+    # Any other modules
+    inputs.sops-nix.nixosModules.sops
+  ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
   ];
 
   time.timeZone = "Europe/Berlin";
@@ -51,11 +66,13 @@
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"
+      "100.100.100.100"
     ];
     firewall = {
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
     };
+    search = [ "tabby-crocodile.ts.net" ];
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -71,6 +88,7 @@
     git
     gnumake
     nixfmt-rfc-style
+    tailscale
     tree
     vim
     wget
@@ -83,7 +101,10 @@
     };
     openssh = {
       enable = true;
-      ports = [ 22 ];
+      ports = [
+        22
+        8888
+      ];
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
@@ -95,10 +116,13 @@
       enable = true;
     };
     envfs.enable = true;
+    tailscale.enable = true;
   };
 
   programs = {
     zsh.enable = true;
+    neovim.enable = true;
+    neovim.defaultEditor = true;
   };
 
   system.stateVersion = "25.05";
