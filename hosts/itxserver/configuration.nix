@@ -70,7 +70,10 @@ in
       "100.100.100.100"
     ];
     firewall = {
-      allowedTCPPorts = [ ];
+      allowedTCPPorts = [
+        8888
+        8123
+      ];
       allowedUDPPorts = [ ];
     };
     search = [ "tabby-crocodile.ts.net" ];
@@ -103,11 +106,7 @@ in
     };
     openssh = {
       enable = true;
-      ports = [
-        22
-        8888
-	8123
-      ];
+      ports = [ 22 ];
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
