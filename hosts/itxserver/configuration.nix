@@ -16,6 +16,7 @@ in
     ../../users/docker.nix
     # All custom modules
     ../../modules/containers/stump.nix
+    ../../modules/containers/homeassistant.nix
     # Any other modules
     inputs.sops-nix.nixosModules.sops
   ];
@@ -83,6 +84,7 @@ in
 
   environment.systemPackages = with pkgs; [
     btop
+    compose2nix
     curl
     gcc
     git
@@ -104,6 +106,7 @@ in
       ports = [
         22
         8888
+	8123
       ];
       settings = {
         PasswordAuthentication = false;

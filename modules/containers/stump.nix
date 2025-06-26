@@ -11,7 +11,7 @@
 
   # Create persistent directory for postgres data
   systemd.tmpfiles.rules = [
-    "d /srv/stump/config 0750 stump stump -"
+    "d /srv/stump/config 0750 docker docker -"
   ];
 
   # Containers
