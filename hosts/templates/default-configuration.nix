@@ -1,5 +1,10 @@
 # A default nixos configuration to build a new system from.
-{ config, lib, pkgs, ... }@args:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}@args:
 let
   inherit (args) inputs;
 in
