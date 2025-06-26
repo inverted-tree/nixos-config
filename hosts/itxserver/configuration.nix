@@ -17,6 +17,7 @@ in
     # All custom modules
     ../../modules/containers/stump.nix
     ../../modules/containers/homeassistant.nix
+    ../../modules/containers/plex.nix
     # Any other modules
     inputs.sops-nix.nixosModules.sops
   ];
@@ -71,8 +72,9 @@ in
     ];
     firewall = {
       allowedTCPPorts = [
-        8888
         8123
+        8888
+        32400
       ];
       allowedUDPPorts = [ ];
     };
