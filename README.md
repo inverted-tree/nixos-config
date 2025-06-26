@@ -3,6 +3,10 @@
     <p>This repo stores all my nix configurations. It is modular in terms of host machines, modules and users. The main branch should be regarded as a rolling release.</p>
 </div>
 
+<div align="center">
+    <img src="https://raw.githubusercontent.com/NixOS/nixos-artwork/master/logo/nix-snowflake-colours.svg" width="128" />
+</div>
+
 > [!NOTE]
 > Disk partitioning still needs to be done manually for each machine. I did not yet have the nerve to make this declarative.
 
