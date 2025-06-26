@@ -1,0 +1,41 @@
+name: Nix CI
+
+on:
+  push:
+    paths:
+      - '**/*.nix'
+  pull_request:
+    paths:
+      - '**/*.nix'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v22
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Check nix flake
+        run: nix flake check
+
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v22
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Install nixfmt
+        run: nix-shell -p nixfmt-rfc-style --command "find . -name '*.nix' -print0 | xargs -0 nixfmt --check"
