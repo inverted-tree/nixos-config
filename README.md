@@ -72,6 +72,9 @@ nixos-install --flake /mnt/etc/nixos#<newhostname>
 
 Finally, set a root password and reboot.
 
+> [!NOTE]
+> After the installation has finished and the system has rebooted, it is ready for my [dotfiles](https://github.com/inverted-tree/dotfiles). Instructions on how to sync them are in the repo's [readme](https://github.com/inverted-tree/dotfiles/blob/main/README.md).
+
 ---
 
 > [!WARNING]
