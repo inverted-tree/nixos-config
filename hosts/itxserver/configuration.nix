@@ -22,6 +22,19 @@ in
     inputs.sops-nix.nixosModules.sops
   ];
 
+  sops = {
+    defaultSopsFormat = "dotenv";
+    age.keyFile = "/home/lukas/.config/sops/age/keys.txt";
+    secrets.syncthing-user = {
+      sopsFile = ../../secrets/syncthing.env.enc;
+      key = "user";
+    };
+    secrets.syncthing-password = {
+      sopsFile = ../../secrets/syncthing.env.enc;
+      key = "password";
+    };
+  };
+
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -75,8 +88,13 @@ in
         8123
         8888
         32400
+        8384 # Syncthing web GUI
+        22000 # Syncthing traffic
       ];
-      allowedUDPPorts = [ ];
+      allowedUDPPorts = [
+        22000 # Syncthing traffic
+        21027 # Syncthing discovery
+      ];
     };
     search = [ "tabby-crocodile.ts.net" ];
   };
@@ -95,6 +113,7 @@ in
     git
     gnumake
     nixfmt-rfc-style
+    sops
     tailscale
     tree
     vim
@@ -121,6 +140,37 @@ in
     };
     envfs.enable = true;
     tailscale.enable = true;
+    syncthing = {
+      enable = true;
+      group = "syncthing";
+      user = "lukas";
+      dataDir = "/home/lukas/sync";
+      configDir = "/home/lukas/.config/syncthing";
+      overrideDevices = true;
+      overrideFolders = true;
+      settings = {
+        gui = {
+          user = config.sops.secrets.syncthing-user;
+          password = config.sops.secrets.syncthing-password;
+          address = "0.0.0.0:8384";
+        };
+        devices = {
+          "MacBook-Pro" = {
+            id = "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
+          };
+        };
+        folders = {
+          "Mobile Backups" = {
+            path = "/data/backups/lukas/phone";
+            devices = [ "MacBook-Pro" ];
+          };
+          "Documents" = {
+            path = "/data/backups/lukas/documents";
+            devices = [ "MacBook-Pro" ];
+          };
+        };
+      };
+    };
   };
 
   programs = {

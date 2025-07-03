@@ -6,6 +6,7 @@
     extraGroups = [
       "wheel"
       "docker"
+      "syncthing"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [
@@ -20,6 +21,7 @@
       python3
       starship
       syncthing
+      tmux
       tree
       usbutils
       wget
