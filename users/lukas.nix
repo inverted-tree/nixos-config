@@ -1,8 +1,13 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   users.users.lukas = {
     isNormalUser = true;
     description = "Lukas";
-    extraGroups = [ "wheel" "docker" "syncthing" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "syncthing"
+    ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       atuin
@@ -30,7 +35,10 @@
   programs = {
     nix-ld = {
       enable = true;
-      libraries = with pkgs; [ glibc libgcc ];
+      libraries = with pkgs; [
+        glibc
+        libgcc
+      ];
     };
   };
 }
