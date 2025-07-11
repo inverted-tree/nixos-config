@@ -21,6 +21,7 @@
       tree
       unzip
       usbutils
+      vimv
       wget
       yazi
       zoxide

@@ -9,6 +9,9 @@ on:
       - '**/*.nix'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -31,11 +34,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Nix
         uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Install nixfmt
-        run: nix-shell -p nixfmt-rfc-style --command "find . -name '*.nix' -print0 | xargs -0 nixfmt --check"
+      - name: Install nixfmt and format .nix files
+        run: nix-shell -p nixfmt-rfc-style --command "find . -name '*.nix' -print0 | xargs -0 nixfmt"
+
+      - name: Commit and push formatted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Auto-format Nix files"
+          git push
