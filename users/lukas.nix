@@ -14,13 +14,17 @@
       bat
       cargo
       chezmoi
+      clang-tools
+      clippy
       fastfetch
       fzf
       fzf-zsh
       git
       lazygit
+      luarocks
       python3
       starship
+      statix
       syncthing
       tmux
       tree
