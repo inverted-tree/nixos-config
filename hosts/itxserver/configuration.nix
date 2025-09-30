@@ -23,7 +23,6 @@ in {
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
-    ../../modules/containers/paperless-ngx.nix
     # Any other modules:
     inputs.sops-nix.nixosModules.sops
   ];
