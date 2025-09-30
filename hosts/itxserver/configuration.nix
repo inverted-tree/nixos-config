@@ -1,27 +1,34 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}@args:
-let
-  inherit (args) inputs;
-in
-{
+# ███████╗██╗   ██╗███████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
+# ██╔════╝╚██╗ ██╔╝██╔════╝    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ 
+# ███████╗ ╚████╔╝ ███████╗    ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+# ╚════██║  ╚██╔╝  ╚════██║    ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+# ███████║   ██║   ███████║    ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+# ╚══════╝   ╚═╝   ╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
+# ════════════════════════════════════════════════════════════════════════════
+# This configuration is for the itx server that hosts all the docker containers
+# and backup services in the lab.
+
+{ config, lib, pkgs, ... }@args:
+let inherit (args) inputs;
+in {
   imports = [
-    # The hardware-dependent options
+    # The hardware-dependent options:
     ./hardware-configuration.nix
-    # All (shared/non-specific) users
+    # The users for this system:
     ../../users/lukas.nix
     ../../users/docker.nix
-    # All custom modules
+    # The custom modules:
+    ../../modules/containers/atuin.nix
     ../../modules/containers/stump.nix
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
-    # Any other modules
+    ../../modules/containers/paperless-ngx.nix
+    # Any other modules:
     inputs.sops-nix.nixosModules.sops
   ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   sops = {
     defaultSopsFormat = "dotenv";
@@ -36,11 +43,6 @@ in
     };
   };
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   time.timeZone = "Europe/Berlin";
 
   boot = {
@@ -49,12 +51,10 @@ in
       zfsSupport = true;
       efiSupport = true;
       efiInstallAsRemovable = true;
-      mirroredBoots = [
-        {
-          devices = [ "nodev" ];
-          path = "/boot";
-        }
-      ];
+      mirroredBoots = [{
+        devices = [ "nodev" ];
+        path = "/boot";
+      }];
     };
     zfs.extraPools = [ "zpool" ];
   };
@@ -68,27 +68,22 @@ in
     };
     useDHCP = false;
     interfaces = {
-      eno1.ipv4.addresses = [
-        {
-          address = "10.0.0.10";
-          prefixLength = 24;
-        }
-      ];
+      eno1.ipv4.addresses = [{
+        address = "10.0.0.10";
+        prefixLength = 24;
+      }];
     };
     defaultGateway = {
       address = "10.0.0.1";
       interface = "eno1";
     };
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "100.100.100.100"
-    ];
+    nameservers = [ "1.1.1.1" "1.0.0.1" "100.100.100.100" ];
     firewall = {
       allowedTCPPorts = [
-        8123
+        8123 # Home assistant web GUI
+        8000
         8888
-        32400
+        32400 # Plex web GUI
         8384 # Syncthing web GUI
         22000 # Syncthing traffic
       ];
@@ -136,9 +131,7 @@ in
         AllowUsers = [ "lukas" ];
       };
     };
-    fail2ban = {
-      enable = true;
-    };
+    fail2ban = { enable = true; };
     envfs.enable = true;
     tailscale.enable = true;
     syncthing = {
@@ -157,7 +150,8 @@ in
         };
         devices = {
           "MacBook-Pro" = {
-            id = "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
+            id =
+              "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
           };
         };
         folders = {
@@ -167,6 +161,10 @@ in
           };
           "Documents" = {
             path = "/data/backups/lukas/documents";
+            devices = [ "MacBook-Pro" ];
+          };
+          "Picture Archive" = {
+            path = "/data/pictures/lukas/archive";
             devices = [ "MacBook-Pro" ];
           };
         };
