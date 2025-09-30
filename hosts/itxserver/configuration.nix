@@ -1,16 +1,23 @@
 # ███████╗██╗   ██╗███████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
-# ██╔════╝╚██╗ ██╔╝██╔════╝    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ 
+# ██╔════╝╚██╗ ██╔╝██╔════╝    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝
 # ███████╗ ╚████╔╝ ███████╗    ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
 # ╚════██║  ╚██╔╝  ╚════██║    ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
 # ███████║   ██║   ███████║    ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
-# ╚══════╝   ╚═╝   ╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
+# ╚══════╝   ╚═╝   ╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
 # ════════════════════════════════════════════════════════════════════════════
 # This configuration is for the itx server that hosts all the docker containers
 # and backup services in the lab.
 
-{ config, lib, pkgs, ... }@args:
-let inherit (args) inputs;
-in {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}@args:
+let
+  inherit (args) inputs;
+in
+{
   imports = [
     # The hardware-dependent options:
     ./hardware-configuration.nix
@@ -27,7 +34,10 @@ in {
     inputs.sops-nix.nixosModules.sops
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   sops = {
     defaultSopsFormat = "dotenv";
@@ -50,10 +60,12 @@ in {
       zfsSupport = true;
       efiSupport = true;
       efiInstallAsRemovable = true;
-      mirroredBoots = [{
-        devices = [ "nodev" ];
-        path = "/boot";
-      }];
+      mirroredBoots = [
+        {
+          devices = [ "nodev" ];
+          path = "/boot";
+        }
+      ];
     };
     zfs.extraPools = [ "zpool" ];
   };
@@ -67,16 +79,22 @@ in {
     };
     useDHCP = false;
     interfaces = {
-      eno1.ipv4.addresses = [{
-        address = "10.0.0.10";
-        prefixLength = 24;
-      }];
+      eno1.ipv4.addresses = [
+        {
+          address = "10.0.0.10";
+          prefixLength = 24;
+        }
+      ];
     };
     defaultGateway = {
       address = "10.0.0.1";
       interface = "eno1";
     };
-    nameservers = [ "1.1.1.1" "1.0.0.1" "100.100.100.100" ];
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "100.100.100.100"
+    ];
     firewall = {
       allowedTCPPorts = [
         8123 # Home assistant web GUI
@@ -130,7 +148,9 @@ in {
         AllowUsers = [ "lukas" ];
       };
     };
-    fail2ban = { enable = true; };
+    fail2ban = {
+      enable = true;
+    };
     envfs.enable = true;
     tailscale.enable = true;
     syncthing = {
@@ -149,8 +169,7 @@ in {
         };
         devices = {
           "MacBook-Pro" = {
-            id =
-              "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
+            id = "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
           };
         };
         folders = {

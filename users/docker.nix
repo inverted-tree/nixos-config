@@ -9,7 +9,8 @@
 #  virtualisation backend to be docker. Container modules need to be explicitly
 #  defined to use this user as their owner.
 
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   users = {
     users.docker = {
       description = "This user runs the Docker containers.";
