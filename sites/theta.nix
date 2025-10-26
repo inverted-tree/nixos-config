@@ -6,9 +6,13 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # Deployment site theta. This nix expression sets all site-related options.
 
-{ ... }: {
+{ ... }:
+{
   time.timeZone = "Europe/Berlin";
 
-  networking = { defaultGateway = { address = "10.0.0.1"; }; };
+  networking = {
+    defaultGateway = {
+      address = "10.0.0.1";
+    };
+  };
 }
-

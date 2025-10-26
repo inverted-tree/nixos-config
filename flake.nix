@@ -15,11 +15,13 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
-  outputs = inputs@{ self, nixpkgs, ... }:
+  outputs =
+    inputs@{ self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       # The itx server hosting most of my homelab.
       nixosConfigurations.itxserver = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };

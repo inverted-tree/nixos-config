@@ -7,14 +7,18 @@
 # Defines options that are common across all host systems, be that servers or
 #   clients.
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # This is the default locale for any machine
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Common nix settings that apply to all machines
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
     };
     gc = {
