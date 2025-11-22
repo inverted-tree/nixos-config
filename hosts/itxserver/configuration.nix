@@ -30,7 +30,6 @@ in
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
-    ../../modules/other/minecraft-server.nix
     # Any other modules:
     inputs.sops-nix.nixosModules.sops
   ];
