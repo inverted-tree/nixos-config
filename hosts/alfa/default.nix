@@ -32,21 +32,24 @@ in
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
-    ../../modules/other/minecraft-server.nix
     # Any third-party modules or flakes:
     inputs.sops-nix.nixosModules.sops
   ];
 
   sops = {
     defaultSopsFormat = "dotenv";
+
     age.keyFile = "/home/lukas/.config/sops/age/keys.txt";
-    secrets.syncthing-user = {
-      sopsFile = ../../secrets/syncthing.env.enc;
-      key = "user";
-    };
-    secrets.syncthing-password = {
-      sopsFile = ../../secrets/syncthing.env.enc;
-      key = "password";
+
+    secrets = {
+      syncthing-user = {
+        sopsFile = ../../secrets/syncthing.env.enc;
+        key = "user";
+      };
+      syncthing-password = {
+        sopsFile = ../../secrets/syncthing.env.enc;
+        key = "password";
+      };
     };
   };
 

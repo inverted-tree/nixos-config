@@ -50,7 +50,7 @@
           };
 
           imports = [
-            ./hosts/itxserver/configuration.nix
+            ./hosts/alfa/default.nix
           ];
         };
       };
@@ -62,7 +62,7 @@
       # The itx server hosting most of my homelab
       nixosConfigurations.alfa = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
-        modules = [ ./hosts/itxserver/configuration.nix ];
+        modules = [ ./hosts/alfa/default.nix ];
       };
     };
 }
