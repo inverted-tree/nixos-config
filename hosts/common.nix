@@ -35,10 +35,10 @@
     curl
     fastfetch
     git
+    neovim
     nixfmt
     tmux
     tree
-    vim
     wget
   ];
 }

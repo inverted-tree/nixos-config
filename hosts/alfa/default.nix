@@ -66,7 +66,10 @@ in
         }
       ];
     };
-    zfs.extraPools = [ "zpool" ];
+    zfs.extraPools = [
+      "zpool"
+      "data"
+    ];
   };
 
   networking = {
