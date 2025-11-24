@@ -196,9 +196,23 @@ if [[ "$PURGE" == true ]]; then
 	fi
 
 	warning "This will permanently delete the host configuration at $TARGET_DIR"
-
+	
 	if promptNo "Are you sure you want to purge the host '$NAME'?"; then
-		sudo rm -rdf "$TARGET_DIR"
+		rel_path="hosts/$NAME"
+
+		if git -C "$BASE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+			if git -C "$BASE_DIR" ls-files --error-unmatch "$rel_path" >/dev/null 2>&1; then
+				info "removing '$rel_path' from git index and working tree..."
+				sudo git -C "$BASE_DIR" rm -rf -- "$rel_path"
+			else
+				info "'$rel_path' is not tracked by git; removing directory only..."
+				sudo rm -rf "$TARGET_DIR"
+			fi
+		else
+			info "$BASE_DIR is not a git repository; removing directory only..."
+			sudo rm -rf "$TARGET_DIR"
+		fi
+
 		success "host '$NAME' has been purged."
 		exit 0
 	else
@@ -310,7 +324,22 @@ if ! command -v envsubst >/dev/null 2>&1; then
 fi
 envsubst <"$TEMPLATE_FILE" | sudo tee "$TARGET_FILE" >/dev/null
 
-success "successfully generated a new config for $NAME."
 if promptYes "do you want to edit it now?"; then
 	sudo -E "${EDITOR:-vim}" "$TARGET_FILE"
+fi
+
+if git -C "$BASE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	info "adding '$TARGET_DIR' to git staging area..."
+	git -C "$BASE_DIR" add -- "$TARGET_DIR"
+
+	if promptYes "Do you want to create a git commit for host '$NAME' now?"; then
+		default_msg="Add host $NAME ($SITE)"
+		read -r -p "Commit message [$default_msg]: " commit_msg
+		commit_msg="${commit_msg:-$default_msg}"
+
+		git -C "$BASE_DIR" commit -m "$commit_msg"
+		success "changes committed."
+	else
+		success "changes staged but not committed."
+	fi
 fi
