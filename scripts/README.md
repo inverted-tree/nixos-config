@@ -8,9 +8,9 @@ This directory contains helper scripts that generate and manage parts of the Nix
 
 | Script                               | Purpose                                                         | Status              |
 | ------------------------------------ | --------------------------------------------------------------- | ------------------- |
-| [`mkHost`](#mkHost – Host Generator) | Create or remove a host configuration under `/etc/nixos/hosts/` | Implemented         |
-| [`mkSite`](#mkSite – Site Generator) | Create site definitions (location / environment grouping)       | Not yet implemented |
-| [`mkUser`](#mkUser – User Generator) | Create user definitions shared across hosts                     | Not yet implemented |
+| [`mkHost`](#mkhost--host-generator) | Create or remove a host configuration under `/etc/nixos/hosts/` | Implemented         |
+| [`mkSite`](#mksite--site-generator) | Create site definitions (location / environment grouping)       | Not yet implemented |
+| [`mkUser`](#mkuser--user-generator) | Create user definitions shared across hosts                     | Not yet implemented |
 
 ---
 
@@ -21,8 +21,8 @@ This directory contains helper scripts that generate and manage parts of the Nix
 It will:
 
 * Create the host directory and configuration files
-* Generate hardware configuration using nixos-generate-config
-* Render default.nix from a template
+* Generate hardware configuration using `nixos-generate-config`
+* Render `default.nix` from a template
 
 ### Basic usage
 
@@ -83,7 +83,7 @@ KEY=value
 ```
 
 > [!NOTE]  
-> Additional arguments will be exported and substituted using `envsubst`. Thus, they will only have effect in a custom template since there are no other substitutions available in the [default template](../templates/hosts/default.tmpl).
+> Additional arguments will be exported and substituted using `envsubst`. Thus, they will only have effect if the template features the corresponding substitutions. The you can find the default template [here](../templates/hosts/default.tmpl).
 
 ---
 
