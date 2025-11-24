@@ -15,9 +15,9 @@ in
     # Common settings thath apply to all machines:
     ../common.nix
     # Deployment-site specific options:
-    ../../sites/"$SITE".nix
+    ../../sites/$SITE.nix
     # The users for this system:
-    ../../users/"$USER".nix
+    ../../users/$USER.nix
     # The custom modules:
 	# TODO: Import any custom modules here.
     # Any third-party modules or flakes:
@@ -35,7 +35,7 @@ in
 
   networking = {
     hostName = "$NAME";
-    hostId = "$HOSTID";
+    hostId = "$HOST_ID";
     networkmanager.enable = true;
     useDHCP = true;
     nameservers = [
@@ -67,7 +67,9 @@ in
       enable = true;
       ports = [ 22 ];
       settings = {
+	    # TODO: Set this to false after you've registered your ssh key.
         PasswordAuthentication = true;
+	    # TODO: Set this to false after you've registered your ssh key.
         KbdInteractiveAuthentication = true;
         PermitRootLogin = "no";
         AllowUsers = [ "$USER" ];
@@ -83,5 +85,5 @@ in
     neovim.defaultEditor = true;
   };
 
-  system.stateVersion = "$SYSTEM_VERSION";
+  system.stateVersion = "$STATE_VERSION";
 }
