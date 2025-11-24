@@ -17,11 +17,19 @@
     scripts.url = "path:./scripts";
   };
 
-  outputs = inputs@{ self, nixpkgs, colmena, scripts, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      colmena,
+      scripts,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       # Define a local nix-develop environment
       devShells.${system} = {
         # The default develop shell featuring colmena
