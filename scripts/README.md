@@ -6,11 +6,11 @@ This directory contains helper scripts that generate and manage parts of the Nix
 
 ## Overview
 
-| Script   | Purpose                                                         | Status              |
-| -------- | --------------------------------------------------------------- | ------------------- |
-| `mkHost` | Create or remove a host configuration under `/etc/nixos/hosts/` | Implemented         |
-| `mkSite` | Create site definitions (location / environment grouping)       | Not yet implemented |
-| `mkUser` | Create user definitions shared across hosts                     | Not yet implemented |
+| Script                               | Purpose                                                         | Status              |
+| ------------------------------------ | --------------------------------------------------------------- | ------------------- |
+| [`mkHost`](#mkHost – Host Generator) | Create or remove a host configuration under `/etc/nixos/hosts/` | Implemented         |
+| [`mkSite`](#mkSite – Site Generator) | Create site definitions (location / environment grouping)       | Not yet implemented |
+| [`mkUser`](#mkUser – User Generator) | Create user definitions shared across hosts                     | Not yet implemented |
 
 ---
 
@@ -82,14 +82,12 @@ They are populated based on the provided arguments. One can define additional va
 KEY=value
 ```
 
-These will be exported and substituted using `envsubst`.
-
 > [!NOTE]  
-> These will only have effect in a custom template. Vars that are not in the template will be ignored.
+> Additional arguments will be exported and substituted using `envsubst`. Thus, they will only have effect in a custom template since there are no other substitutions available in the [default template](../templates/hosts/default.tmpl).
 
 ---
 
-## mkSite – Site Generator (Planned)
+## mkSite – Site Generator
 
 This script will manage logical site definitions such as:
 
@@ -108,7 +106,7 @@ This script will manage logical site definitions such as:
 
 ---
 
-## mkUser – User Generator (Planned)
+## mkUser – User Generator
 
 This script will manage shared user definitions for hosts.
 
