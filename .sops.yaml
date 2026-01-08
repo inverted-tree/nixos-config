@@ -1,7 +1,5 @@
 keys:
   - &primary age1njkfdv4ayqlqak76az6ezhse8hn3gmgt9ntur2edyz3watx2xdqq3jklqm
 creation_rules:
-  - path_regex: ^secrets/.*$
-    key_groups:
-    - age:
-      - *primary
+  - age:
+    - *primary

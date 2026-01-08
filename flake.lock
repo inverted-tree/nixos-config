@@ -53,6 +53,27 @@
         "type": "github"
       }
     },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766939458,
+        "narHash": "sha256-VvZeAKyB3vhyHStSO8ACKzWRKNQPmVWktjfuSVdvtUA=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "e298a148013c980e3c8c0ac075295fab5074d643",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-25.11",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -138,10 +159,27 @@
         "type": "github"
       }
     },
+    "quadlet-nix": {
+      "locked": {
+        "lastModified": 1763141753,
+        "narHash": "sha256-XAHkOkLEWbRQZ6t/SowwOukrUfIneNQOC/UEQlTaPBU=",
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "rev": "211b5c626cf9ea91403b510e2ac5ca03a7194566",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SEIAROTg",
+        "repo": "quadlet-nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "colmena": "colmena",
+        "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
+        "quadlet-nix": "quadlet-nix",
         "scripts": "scripts",
         "sops-nix": "sops-nix"
       }

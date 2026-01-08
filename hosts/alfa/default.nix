@@ -4,31 +4,21 @@
 # |___|___|_|  \_/|___|_|    |___|_|_| |___|
 # ──────────────────────────────────────────────────────────────────────────────
 # Defines the configuration for the central server ''alfa''. This server hosts
-#   all the containerized services and holds all the data.
+#   all the containerized services and serves the data.
 
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}@args:
-let
-  inherit (args) inputs;
-in
-{
+{ config, lib, pkgs, ... }@args:
+let inherit (args) inputs;
+in {
   imports = [
-    # The hardware-dependent options:
-    ./hardware.nix
-    # Common settings thath apply to all machines:
-    ../common.nix
-    # Deployment-site specific options:
-    ../../sites/theta.nix
+    ./hardware.nix # The hardware-dependent options:
+    ../common.nix # Common settings thath apply to all machines:
+    ../../sites/theta.nix # Deployment-site specific options:
     # The users for this system:
     ../../users/lukas.nix
     ../../users/docker.nix
     # The custom modules:
-    ../../modules/containers/atuin.nix
-    ../../modules/containers/stump.nix
+    # ../../modules/containers/atuin.nix
+    ../../modules/containers/stump/stump.nix
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
@@ -59,17 +49,12 @@ in
       zfsSupport = true;
       efiSupport = true;
       efiInstallAsRemovable = true;
-      mirroredBoots = [
-        {
-          devices = [ "nodev" ];
-          path = "/boot";
-        }
-      ];
+      mirroredBoots = [{
+        devices = [ "nodev" ];
+        path = "/boot";
+      }];
     };
-    zfs.extraPools = [
-      "zpool"
-      "data"
-    ];
+    zfs.extraPools = [ "zpool" "data" ];
   };
 
   networking = {
@@ -81,21 +66,13 @@ in
     };
     useDHCP = false;
     interfaces = {
-      eno1.ipv4.addresses = [
-        {
-          address = "10.0.0.10";
-          prefixLength = 24;
-        }
-      ];
+      eno1.ipv4.addresses = [{
+        address = "10.0.0.10";
+        prefixLength = 24;
+      }];
     };
-    defaultGateway = {
-      interface = "eno1";
-    };
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "100.100.100.100"
-    ];
+    defaultGateway = { interface = "eno1"; };
+    nameservers = [ "1.1.1.1" "1.0.0.1" "100.100.100.100" ];
     firewall = {
       allowedTCPPorts = [
         8123 # Home assistant web GUI
@@ -104,6 +81,7 @@ in
         32400 # Plex web GUI
         8384 # Syncthing web GUI
         22000 # Syncthing traffic
+        8444
       ];
       allowedUDPPorts = [
         22000 # Syncthing traffic
@@ -141,9 +119,7 @@ in
         AllowUsers = [ "lukas" ];
       };
     };
-    fail2ban = {
-      enable = true;
-    };
+    fail2ban = { enable = true; };
     envfs.enable = true;
     tailscale.enable = true;
     syncthing = {
@@ -162,7 +138,8 @@ in
         };
         devices = {
           "MacBook-Pro" = {
-            id = "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
+            id =
+              "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
           };
         };
         folders = {
