@@ -4,9 +4,6 @@ on:
   push:
     paths:
       - '**/*.nix'
-  pull_request:
-    paths:
-      - '**/*.nix'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +25,9 @@ jobs:
       - name: Check nix flake
         run: nix flake check
 
+      - name: Check shell scripts
+        run: nix-shell -p shellcheck --command "find ./scripts -name '*.sh' -print0 | xargs -0 shellcheck -e 2329"
+
   format:
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Install nixfmt and format .nix files
-        run: nix-shell -p nixfmt-rfc-style --command "find . -name '*.nix' -print0 | xargs -0 nixfmt"
+        run: nix-shell -p nixfmt-rfc-style --command "find . -path './templates' -prune -o -name '*.nix' -print0 | xargs -0 nixfmt"
 
       - name: Commit and push formatted files
         run: |
