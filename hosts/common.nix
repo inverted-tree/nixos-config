@@ -36,7 +36,7 @@
     fastfetch
     git
     neovim
-    nixfmt
+    nixfmt-rfc-style
     tmux
     tree
     wget
