@@ -1,3 +1,11 @@
+# .       _           _      _ _ _
+#  ___   | |_ ___ ___| |_   | |_| |_ ___  __ ___ _ _
+# | -_|  | . | . | . | '_|  | | | . |  _||. |  _| | |
+# |___|  |___|___|___|_|_|  |_|_|___|_| |___|_| |_  |
+#                                               |___|
+# ──────────────────────────────────────────────────────────────────────────────
+# The main user for all systems. This is my standard admin login.
+
 { config, ... }@args:
 let
   inherit (args) inputs;
@@ -43,7 +51,8 @@ in {
                 "+%U:@%U"
               ]; # Map the user this container runs as into the container ns for mount access rights
               gidMaps = [ "+%G:@%G" ]; # The same for this users group
-              user = "%U";
+              user =
+                "%U"; # Run the process as the user which owns the mounted directories
               networks = [ "podman" ];
               publishPorts = [ "10801:10801" ];
             };
