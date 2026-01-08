@@ -4,7 +4,7 @@
 # |___|  |___|___|___|_|_|  |_|_|___|_| |___|_| |_  |
 #                                               |___|
 # ──────────────────────────────────────────────────────────────────────────────
-# The main user for all systems. This is my standard admin login.
+# An e-book library to organize my textbooks. https://www.stumpapp.dev/
 
 { config, ... }@args:
 let
@@ -61,7 +61,7 @@ in
                   "+%U:@%U"
                 ]; # Map the user this container runs as into the container ns for mount access rights
                 gidMaps = [ "+%G:@%G" ]; # The same for this users group
-                user = "%U"; # Run the process as the user which owns the mounted directories
+                user = "%U"; # Run the process as the user who owns the mounted directories
                 networks = [ "podman" ];
                 publishPorts = [ "10801:10801" ];
               };
