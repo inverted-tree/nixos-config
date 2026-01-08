@@ -6,9 +6,16 @@
 # Defines the configuration for the central server ''alfa''. This server hosts
 #   all the containerized services and serves the data.
 
-{ config, lib, pkgs, ... }@args:
-let inherit (args) inputs;
-in {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}@args:
+let
+  inherit (args) inputs;
+in
+{
   imports = [
     ./hardware.nix # The hardware-dependent options:
     ../common.nix # Common settings thath apply to all machines:
@@ -49,12 +56,17 @@ in {
       zfsSupport = true;
       efiSupport = true;
       efiInstallAsRemovable = true;
-      mirroredBoots = [{
-        devices = [ "nodev" ];
-        path = "/boot";
-      }];
+      mirroredBoots = [
+        {
+          devices = [ "nodev" ];
+          path = "/boot";
+        }
+      ];
     };
-    zfs.extraPools = [ "zpool" "data" ];
+    zfs.extraPools = [
+      "zpool"
+      "data"
+    ];
   };
 
   networking = {
@@ -66,13 +78,21 @@ in {
     };
     useDHCP = false;
     interfaces = {
-      eno1.ipv4.addresses = [{
-        address = "10.0.0.10";
-        prefixLength = 24;
-      }];
+      eno1.ipv4.addresses = [
+        {
+          address = "10.0.0.10";
+          prefixLength = 24;
+        }
+      ];
     };
-    defaultGateway = { interface = "eno1"; };
-    nameservers = [ "1.1.1.1" "1.0.0.1" "100.100.100.100" ];
+    defaultGateway = {
+      interface = "eno1";
+    };
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "100.100.100.100"
+    ];
     firewall = {
       allowedTCPPorts = [
         8123 # Home assistant web GUI
@@ -119,7 +139,9 @@ in {
         AllowUsers = [ "lukas" ];
       };
     };
-    fail2ban = { enable = true; };
+    fail2ban = {
+      enable = true;
+    };
     envfs.enable = true;
     tailscale.enable = true;
     syncthing = {
@@ -138,8 +160,7 @@ in {
         };
         devices = {
           "MacBook-Pro" = {
-            id =
-              "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
+            id = "GZAKPGB-BBVIY5T-2D3EY22-YYMGT5L-R3MNHGX-GYWNRWR-TG4BUMW-BQMBBAU";
           };
         };
         folders = {

@@ -5,11 +5,17 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # The main user for all systems. This is my standard admin login.
 
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   users.users.lukas = {
     isNormalUser = true;
     description = "Lukas";
-    extraGroups = [ "wheel" "docker" "podman" "syncthing" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "podman"
+      "syncthing"
+    ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       atuin
@@ -42,7 +48,10 @@
     nix-ld = {
       # Needed to run unpatched dynamic binaries on NixOS.
       enable = true;
-      libraries = with pkgs; [ glibc libgcc ]; # Required by some nvim plugins.
+      libraries = with pkgs; [
+        glibc
+        libgcc
+      ]; # Required by some nvim plugins.
     };
   };
 

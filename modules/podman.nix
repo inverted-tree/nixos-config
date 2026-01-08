@@ -7,15 +7,21 @@
 # Use Podman as the OCI container backend for running root- and deamonless
 #  container services. All containers are managed with quadlet-nix.
 
-{ pkgs, ... }: {
-  users.groups.podman = { name = "podman"; };
+{ pkgs, ... }:
+{
+  users.groups.podman = {
+    name = "podman";
+  };
 
   virtualisation = {
     podman = {
       enable = true;
 
       autoPrune.enable = true;
-      autoPrune.flags = [ "--all" "--force" ];
+      autoPrune.flags = [
+        "--all"
+        "--force"
+      ];
 
       defaultNetwork.settings = {
         dns_enabled = true; # Required for container networking to use names.
@@ -36,6 +42,5 @@
     home-manager
   ];
 
-  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" =
-    80; # Allow non-root containers to access lower port numbers
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80; # Allow non-root containers to access lower port numbers
 }

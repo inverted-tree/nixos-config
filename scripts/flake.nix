@@ -7,19 +7,26 @@
 # This flake exposes the infrastructure helper scripts (mkHost, mkSite, mkUser,
 #  mkPods) to the nix-ecosystem.
 {
-  description =
-    "Infrastructure helper scripts (mkHost, mkSite, mkUser, mkPods)";
+  description = "Infrastructure helper scripts (mkHost, mkSite, mkUser, mkPods)";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs = { self, nixpkgs, ... }:
+  outputs =
+    { self, nixpkgs, ... }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-    in {
-      packages = forAllSystems (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in {
+    in
+    {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
           mkHost = pkgs.writeShellApplication {
             name = "mkHost";
 
@@ -60,43 +67,49 @@
 
             text = builtins.readFile ./mkPods.sh;
           };
-        });
+        }
+      );
 
       apps = forAllSystems (system: {
         mkHost = {
           type = "app";
           program = "${self.packages.${system}.mkHost}/bin/mkHost";
           meta = {
-            description =
-              "Generate a new host scaffold (hardware + config template)";
+            description = "Generate a new host scaffold (hardware + config template)";
           };
         };
 
         mkSite = {
           type = "app";
           program = "${self.packages.${system}.mkSite}/bin/mkSite";
-          meta = { description = "Site generator (not implemented yet)"; };
+          meta = {
+            description = "Site generator (not implemented yet)";
+          };
         };
 
         mkUser = {
           type = "app";
           program = "${self.packages.${system}.mkUser}/bin/mkUser";
-          meta = { description = "User generator (not implemented yet)"; };
+          meta = {
+            description = "User generator (not implemented yet)";
+          };
         };
 
         mkPods = {
           type = "app";
           program = "${self.packages.${system}.mkPods}/bin/mkPods";
           meta = {
-            description =
-              "Generate a new podman container/pod module from a docker compose file";
+            description = "Generate a new podman container/pod module from a docker compose file";
           };
         };
       });
 
-      devShells = forAllSystems (system:
-        let pkgs = import nixpkgs { inherit system; };
-        in {
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
           default = pkgs.mkShell {
             packages = [
               pkgs.bashInteractive
@@ -107,6 +120,7 @@
               pkgs.git
             ];
           };
-        });
+        }
+      );
     };
 }

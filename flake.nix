@@ -24,12 +24,22 @@
     scripts.url = "path:./scripts"; # Helper scripts
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, colmena, sops-nix, quadlet-nix
-    , scripts, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      colmena,
+      sops-nix,
+      quadlet-nix,
+      scripts,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       # Define a local nix-develop environment
       devShells.${system} = {
         # The default develop shell featuring colmena

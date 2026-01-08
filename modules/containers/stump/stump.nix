@@ -10,7 +10,8 @@
 let
   inherit (args) inputs;
   service = "stump";
-in {
+in
+{
   imports = [ ../../podman.nix ];
 
   users.groups.${service} = { };
@@ -29,44 +30,52 @@ in {
 
   networking.firewall.allowedTCPPorts = [ 10801 ];
 
-  home-manager.users.${service} = { config, osConfig, ... }: {
-    imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
+  home-manager.users.${service} =
+    { config, osConfig, ... }:
+    {
+      imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
-    virtualisation.quadlet =
-      let inherit (config.virtualisation.quadlet) containers;
-      in {
-        containers = {
-          ${service} = {
-            unitConfig = { Description = "Stump Podman container"; };
-
-            containerConfig = {
-              image = "docker.io/aaronleopold/stump:latest";
-              exec = [ "" ];
-              environments = {
-                STUMP_CONFIG_DIR = "/config";
-                RUST_BACKTRACE = "1";
+      virtualisation.quadlet =
+        let
+          inherit (config.virtualisation.quadlet) containers;
+        in
+        {
+          containers = {
+            ${service} = {
+              unitConfig = {
+                Description = "Stump Podman container";
               };
-              volumes = [ "/srv/${service}:/config" "/data/books:/data" ];
-              uidMaps = [
-                "+%U:@%U"
-              ]; # Map the user this container runs as into the container ns for mount access rights
-              gidMaps = [ "+%G:@%G" ]; # The same for this users group
-              user =
-                "%U"; # Run the process as the user which owns the mounted directories
-              networks = [ "podman" ];
-              publishPorts = [ "10801:10801" ];
-            };
 
-            serviceConfig = {
-              Restart = "always";
-              RestartSec = "10";
+              containerConfig = {
+                image = "docker.io/aaronleopold/stump:latest";
+                exec = [ "" ];
+                environments = {
+                  STUMP_CONFIG_DIR = "/config";
+                  RUST_BACKTRACE = "1";
+                };
+                volumes = [
+                  "/srv/${service}:/config"
+                  "/data/books:/data"
+                ];
+                uidMaps = [
+                  "+%U:@%U"
+                ]; # Map the user this container runs as into the container ns for mount access rights
+                gidMaps = [ "+%G:@%G" ]; # The same for this users group
+                user = "%U"; # Run the process as the user which owns the mounted directories
+                networks = [ "podman" ];
+                publishPorts = [ "10801:10801" ];
+              };
+
+              serviceConfig = {
+                Restart = "always";
+                RestartSec = "10";
+              };
             };
           };
+
+          autoEscape = true; # Automatically escape characters
         };
 
-        autoEscape = true; # Automatically escape characters
-      };
-
-    home.stateVersion = "25.11";
-  };
+      home.stateVersion = "25.11";
+    };
 }
