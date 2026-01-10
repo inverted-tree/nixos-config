@@ -25,11 +25,12 @@ in
     ../../users/docker.nix
     # The custom modules:
     # ../../modules/containers/atuin.nix
+    ../../modules/containers/atuin/atuin.nix
     ../../modules/containers/stump/stump.nix
+    ../../modules/containers/pihole/pihole.nix
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
-    ../../modules/containers/pihole/pihole.nix
     # Any third-party modules or flakes:
     inputs.sops-nix.nixosModules.sops
   ];
