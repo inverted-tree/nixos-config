@@ -42,5 +42,5 @@
     home-manager
   ];
 
-  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80; # Allow non-root containers to access lower port numbers
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 53; # Allow non-root containers to access lower port numbers
 }

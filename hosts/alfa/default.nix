@@ -29,6 +29,7 @@ in
     ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     ../../modules/containers/freshrss.nix
+    ../../modules/containers/pihole/pihole.nix
     # Any third-party modules or flakes:
     inputs.sops-nix.nixosModules.sops
   ];
