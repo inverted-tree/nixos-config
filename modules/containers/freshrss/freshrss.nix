@@ -1,16 +1,16 @@
-# .    _ _       _          _
-#  ___|_| |_ ___| |___    _| |___ ___
-# | . | |   | . | | -_|  | . |   |_ -|
-# |  _|_|_|_|___|_|___|  |___|_|_|___|
-# |_|
+# .               ___           _                                _
+#  ___ ___ ___   |  _|___ ___ _| |    __ ___ ___ ___ ___ ___  __| |_ ___ ___
+# |  _|_ -|_ -|  |  _| -_| -_| . |   |. | . | . |  _| -_| . ||. |  _| . |  _|
+# |_| |___|___|  |_| |___|___|___|  |___|_  |_  |_| |___|_  |___| | |___|_|
+#                                       |___|___|       |___|   |__|
 # ──────────────────────────────────────────────────────────────────────────────
-# A DNS sinkhole to block unwanted contents on the entire network.
-#   https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker
+# A RSS feed aggregator with an API for third-party frontends.
+#   https://www.freshrss.org/
 
 { config, ... }@args:
 let
   inherit (args) inputs;
-  service = "pihole";
+  service = "freshrss";
 in
 {
   imports = [
@@ -19,7 +19,7 @@ in
   ];
 
   sops.secrets = {
-    piholeEnv = {
+    freshrssEnv = {
       sopsFile = ./${service}.env;
       format = "dotenv";
       owner = "${service}";
@@ -38,13 +38,13 @@ in
 
   nix.settings.allowed-users = [ "${service}" ];
 
-  systemd.tmpfiles.rules = [ "d /srv/${service} 0770 ${service} podman - -" ];
-
-  networking.firewall.allowedTCPPorts = [
-    53
-    80
-    443
+  systemd.tmpfiles.rules = [
+    "d /srv/${service} 0770 ${service} podman - -"
+    "d /srv/${service}/data 0770 ${service} podman - -"
+    "d /srv/${service}/extensions 0770 ${service} podman - -"
   ];
+
+  networking.firewall.allowedTCPPorts = [ 8008 ];
 
   home-manager.users.${service} =
     { config, osConfig, ... }:
@@ -60,26 +60,24 @@ in
           containers = {
             ${service} = {
               unitConfig = {
-                Description = "PiHole podman container";
+                Description = "FreshRSS podman container";
 
                 StartLimitIntervalSec = "180";
                 StartLimitBurst = "3";
               };
 
               containerConfig = {
-                image = "docker.io/${service}/${service}:latest";
+                image = "docker.io/freshrss/freshrss";
                 environments = {
                   TZ = "Europe/Berlin";
                 };
-                environmentFiles = [ "${secrets.piholeEnv.path}" ];
-                volumes = [ "/srv/${service}:/etc/${service}:rw,U" ];
-                networks = [ "podman" ];
-                publishPorts = [
-                  "53:53/tcp"
-                  "53:53/udp"
-                  "80:80/tcp"
-                  "443:443/tcp"
+                environmentFiles = [ "${secrets.freshrssEnv.path}" ];
+                volumes = [
+                  "/srv/${service}/data:/var/www/FreshRSS/data:rw,U"
+                  "/srv/${service}/extensions:/var/www/FreshRSS/extensions:rw,U"
                 ];
+                networks = [ "podman" ];
+                publishPorts = [ "8008:80/tcp" ];
               };
 
               serviceConfig = {

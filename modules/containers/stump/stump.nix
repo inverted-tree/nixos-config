@@ -44,6 +44,9 @@ in
             ${service} = {
               unitConfig = {
                 Description = "Stump Podman container";
+
+                StartLimitIntervalSec = "180";
+                StartLimitBurst = "3";
               };
 
               containerConfig = {
