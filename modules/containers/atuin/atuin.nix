@@ -53,7 +53,7 @@ in
 
       virtualisation.quadlet =
         let
-          inherit (config.virtualisation.quadlet) containers;
+          inherit (config.virtualisation.quadlet) containers networks;
           inherit (osConfig.sops) secrets;
         in
         {
@@ -61,6 +61,7 @@ in
             "${service}-db" = {
               unitConfig = {
                 Description = "Atuin database podman container";
+
                 StartLimitIntervalSec = "180";
                 StartLimitBurst = "3";
               };
@@ -69,7 +70,7 @@ in
                 image = "docker.io/library/postgres:16.11-alpine3.23";
                 environmentFiles = [ "${secrets.atuinEnv.path}" ];
                 volumes = [ "/srv/${service}/postgres:/var/lib/postgresql/data:rw,U" ];
-                networks = [ "podman" ];
+                networks = [ "atuin-net" ];
               };
 
               serviceConfig = {
@@ -81,8 +82,12 @@ in
             "${service}-server" = {
               unitConfig = {
                 Description = "Atuin-server podman container";
+
                 StartLimitIntervalSec = "180";
                 StartLimitBurst = "3";
+
+                Requires = [ containers."${service}-db".ref ];
+                After = [ containers."${service}-db".ref ];
               };
 
               containerConfig = {
@@ -99,7 +104,7 @@ in
                 user = "0";
                 environmentFiles = [ "${secrets.atuinEnv.path}" ];
                 volumes = [ "/srv/${service}/config:/config:rw,U" ];
-                networks = [ "podman" ];
+                networks = [ "atuin-net" ];
                 publishPorts = [ "8888:8888" ];
               };
 
@@ -108,6 +113,10 @@ in
                 RestartSec = "10";
               };
             };
+          };
+
+          networks = {
+            internal.networkConfig.name = "atuin-net";
           };
 
           autoEscape = true;
