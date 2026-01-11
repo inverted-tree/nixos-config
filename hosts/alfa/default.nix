@@ -26,9 +26,9 @@ in
     # The custom modules:
     ../../modules/containers/atuin/atuin.nix
     ../../modules/containers/freshrss/freshrss.nix
+    ../../modules/containers/homeassistant/homeassistant.nix
     ../../modules/containers/pihole/pihole.nix
     ../../modules/containers/stump/stump.nix
-    ../../modules/containers/homeassistant.nix
     ../../modules/containers/plex.nix
     # Any third-party modules or flakes:
     inputs.sops-nix.nixosModules.sops
