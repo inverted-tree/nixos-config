@@ -70,12 +70,14 @@ in
                 image = "docker.io/freshrss/freshrss";
                 environments = {
                   TZ = "Europe/Berlin";
+                  CRON_MIN = "*/15"; # Refresh feeds every 15 minutes
                 };
                 environmentFiles = [ "${secrets.freshrssEnv.path}" ];
                 volumes = [
                   "/srv/${service}/data:/var/www/FreshRSS/data:rw,U"
                   "/srv/${service}/extensions:/var/www/FreshRSS/extensions:rw,U"
                 ];
+                user = "0:0";
                 networks = [ "podman" ];
                 publishPorts = [ "8008:80/tcp" ];
               };
