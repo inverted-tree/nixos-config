@@ -12,6 +12,11 @@
 
   time.timeZone = "Europe/Berlin";
 
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
+  };
+
   networking = {
     defaultGateway = {
       address = "10.0.0.1";
@@ -48,5 +53,9 @@
   programs = {
     neovim.enable = true;
     neovim.defaultEditor = true;
+  };
+
+  services = {
+    xe-guest-utilities.enable = true;
   };
 }
