@@ -89,6 +89,12 @@
           inputs.quadlet-nix.nixosModules.quadlet
         ];
       };
+      nixosConfigurations.excalibur = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/arcanum/excalibur/default.nix
+        ];
+      };
       nixosConfigurations.voidkey = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
