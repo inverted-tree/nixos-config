@@ -3,7 +3,7 @@
 # | -_|_|_|  _||. | | | . | | |  _|
 # |___|_|_|___|___|_|_|___|___|_|
 # ──────────────────────────────────────────────────────────────────────────────
-# Defines the configuration for the central server ''excalibur''. This server 
+# Defines the configuration for the central server ''excalibur''. This server
 #   lives on the arcanum cluster and hosts containerized services and data.
 
 {
@@ -23,8 +23,8 @@ in
   ];
 
   boot.loader = {
-  systemd-boot.enable = true;
-  efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
   networking = {
