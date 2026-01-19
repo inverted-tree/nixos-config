@@ -26,7 +26,7 @@ in
 
   nix.settings.allowed-users = [ "${service}" ];
 
-  systemd.tmpfiles.rules = [ "d /srv/${service} 0770 ${service} podman - -" ];
+  systemd.tmpfiles.rules = [ "d /srv/${service} 0750 ${service} podman - -" ];
 
   networking.firewall.allowedTCPPorts = [ 10801 ];
 
@@ -57,14 +57,9 @@ in
                   RUST_BACKTRACE = "1";
                 };
                 volumes = [
-                  "/srv/${service}:/config"
-                  "/data/books:/data"
+                  "/srv/${service}:/config:idmap"
+                  "/data/books:/data:ro"
                 ];
-                uidMaps = [
-                  "+%U:@%U"
-                ]; # Map the user this container runs as into the container ns for mount access rights
-                gidMaps = [ "+%G:@%G" ]; # The same for this users group
-                user = "%U"; # Run the process as the user who owns the mounted directories
                 networks = [ "podman" ];
                 publishPorts = [ "10801:10801" ];
               };

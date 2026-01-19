@@ -17,15 +17,18 @@
     podman = {
       enable = true;
 
-      autoPrune.enable = true;
-      autoPrune.flags = [
-        "--all"
-        "--force"
-      ];
+      autoPrune = {
+        enable = true;
+        flags = [
+          "--all"
+          "--force"
+        ];
+      };
 
       defaultNetwork.settings = {
         dns_enabled = true; # Required for container networking to use names.
       };
+
       extraPackages = [ pkgs.zfs ];
     };
 
