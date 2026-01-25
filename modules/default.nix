@@ -1,4 +1,7 @@
 { ... }:
 {
-  imports = [ ./containers ];
+  imports = [
+    ./containers
+    ./system
+  ];
 }

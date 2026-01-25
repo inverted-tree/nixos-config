@@ -1,0 +1,4 @@
+{ ... }:
+{
+  imports = [ ./prometheus-node-exporter ];
+}

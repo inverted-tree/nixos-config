@@ -92,6 +92,11 @@ in
       publishPort = 9090;
       configFile = "/srv/prometheus/prometheus.yml";
     };
+
+    prometheus-node-exporter = {
+      enable = true;
+      publishPort = 9100;
+    };
   };
 
   system.stateVersion = "25.05";
