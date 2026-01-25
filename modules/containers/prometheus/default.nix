@@ -97,7 +97,7 @@ in
                     "${conf.configFile}:/etc/prometheus/prometheus.yml:ro"
                   ];
                   user = "0";
-                  networks = [ "podman" ];
+                  networks = [ "host" ];
                   publishPorts = [ "${toString conf.publishPort}:9090" ];
                 };
 

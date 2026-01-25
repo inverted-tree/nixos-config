@@ -81,7 +81,7 @@ in
                     "/srv/${service}:/var/lib/grafana:idmap"
                   ];
                   user = "0";
-                  networks = [ "podman" ];
+                  networks = [ "host" ];
                   publishPorts = [ "${toString conf.publishPort}:3000" ];
                 };
 
