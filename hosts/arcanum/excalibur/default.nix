@@ -20,7 +20,10 @@ in
     ./hardware.nix # Artifact specific hardware config
     ../common.nix # Common options for machines on this cluster
     ../../../users/lukas.nix # Admin user for this artifact
-
+    # Service modules
+    ../../../modules/containers/grafana/grafana.nix
+    ../../../modules/containers/homeassistant/homeassistant.nix
+    ../../../modules/containers/plex/plex.nix
     ../../../modules/containers/stump/stump.nix
   ];
 

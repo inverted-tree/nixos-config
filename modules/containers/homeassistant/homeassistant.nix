@@ -15,7 +15,10 @@ in
 {
   imports = [ ../../podman.nix ];
 
-  systemd.tmpfiles.rules = [ "d /srv/${service} 0770 root podman - -" ];
+  systemd.tmpfiles.rules = [
+    "d /srv/${service} 0750 root podman - -"
+    "d /srv/${service}/config 0750 root podman - -"
+  ];
 
   networking.firewall.allowedTCPPorts = [ 8123 ];
 
@@ -29,7 +32,7 @@ in
       containers = {
         ${service} = {
           unitConfig = {
-            Description = "Homeassistant podman container";
+            Description = "${service} podman container";
 
             StartLimitIntervalSec = "180";
             StartLimitBurst = "3";
@@ -41,7 +44,7 @@ in
               TZ = "Europe/Berlin";
             };
             volumes = [
-              "/srv/${service}/config:/config"
+              "/srv/${service}/config:/config:idmap"
               "/etc/localtime:/etc/localtime:ro"
               "/run/dbus:/run/dbus:ro"
             ];
