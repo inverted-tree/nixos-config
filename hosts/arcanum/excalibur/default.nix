@@ -24,6 +24,7 @@ in
     ../../../modules/containers/grafana/grafana.nix
     ../../../modules/containers/homeassistant/homeassistant.nix
     ../../../modules/containers/plex/plex.nix
+    ../../../modules/containers/prometheus/prometheus.nix
     ../../../modules/containers/stump/stump.nix
   ];
 
