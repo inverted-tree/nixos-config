@@ -24,7 +24,6 @@ in
     ../../../modules
     ../../../modules/containers/homeassistant/homeassistant.nix
     ../../../modules/containers/plex/plex.nix
-    ../../../modules/containers/prometheus/prometheus.nix
     ../../../modules/containers/stump/stump.nix
   ];
 
@@ -86,6 +85,12 @@ in
     grafana = {
       enable = true;
       publishPort = 3000;
+    };
+
+    prometheus = {
+      enable = true;
+      publishPort = 9090;
+      configFile = "/srv/prometheus/prometheus.yml";
     };
   };
 

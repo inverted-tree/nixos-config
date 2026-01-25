@@ -7,7 +7,7 @@
     # ./homeassistant/default.nix
     # ./pihole/default.nix
     # ./plex/default.nix
-    # ./prometheus/default.nix
+    ./prometheus
     # ./stump/default.nix
   ];
 }
