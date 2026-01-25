@@ -21,7 +21,7 @@ in
     ../common.nix # Common options for machines on this cluster
     ../../../users/lukas.nix # Admin user for this artifact
     # Service modules
-    ../../../modules/containers/grafana/grafana.nix
+    ../../../modules
     ../../../modules/containers/homeassistant/homeassistant.nix
     ../../../modules/containers/plex/plex.nix
     ../../../modules/containers/prometheus/prometheus.nix
@@ -80,6 +80,13 @@ in
 
   programs = {
     zsh.enable = true;
+  };
+
+  modules.services = {
+    grafana = {
+      enable = true;
+      publishPort = 3000;
+    };
   };
 
   system.stateVersion = "25.05";
