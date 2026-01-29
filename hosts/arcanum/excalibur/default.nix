@@ -34,9 +34,12 @@ in
     age.keyFile = "/home/lukas/.config/sops/age/keys.txt";
   };
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    zfs.extraPools = [ "data" ];
   };
 
   networking = {
@@ -82,10 +85,15 @@ in
       };
     };
     tailscale.enable = true;
+    zfs = {
+      autoScrub.enable = true;
+      autoSnapshot.enable = true;
+    };
   };
 
   programs = {
     zsh.enable = true;
+    neovim.enable = true;
   };
 
   modules.services = {
