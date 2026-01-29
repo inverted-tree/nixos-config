@@ -21,7 +21,11 @@ let
   service = "grafana";
 in
 {
-  imports = [ ../../podman.nix ];
+  imports = [
+    ../../podman.nix
+    inputs.home-manager.nixosModules.home-manager
+    inputs.quadlet-nix.nixosModules.quadlet
+  ];
 
   options.modules.services.grafana = {
     enable = lib.mkEnableOption "Grafana (rootless quadlet container)";

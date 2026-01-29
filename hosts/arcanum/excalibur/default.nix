@@ -17,15 +17,22 @@ let
 in
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops # Secrets management
+
     ./hardware.nix # Artifact specific hardware config
     ../common.nix # Common options for machines on this cluster
+
     ../../../users/lukas.nix # Admin user for this artifact
-    # Service modules
-    ../../../modules
+    ../../../modules # Service modules
     ../../../modules/containers/homeassistant/homeassistant.nix
     ../../../modules/containers/plex/plex.nix
     ../../../modules/containers/stump/stump.nix
   ];
+
+  sops = {
+    defaultSopsFormat = "dotenv";
+    age.keyFile = "/home/lukas/.config/sops/age/keys.txt";
+  };
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -96,6 +103,12 @@ in
     prometheus-node-exporter = {
       enable = true;
       publishPort = 9100;
+    };
+
+    freshrss = {
+      enable = true;
+      publishPort = 8008;
+      cronTime = "*/15";
     };
   };
 

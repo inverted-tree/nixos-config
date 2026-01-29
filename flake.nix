@@ -61,7 +61,7 @@
         };
 
         # The itx server hosting most of my homelab
-        alfa = {
+        excalibur = {
           deployment = {
             targetHost = "100.89.38.72"; # Tailnet IP
             targetUser = "lukas";
@@ -69,7 +69,7 @@
           };
 
           imports = [
-            ./hosts/alfa/default.nix
+            ./hosts/arcanum/excalibur
             inputs.home-manager.nixosModules.home-manager
             inputs.quadlet-nix.nixosModules.quadlet
           ];
@@ -81,26 +81,18 @@
       # ----------------------------------------------------------------------
 
       # The itx server hosting most of my homelab
-      nixosConfigurations.alfa = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/alfa/default.nix
-          inputs.home-manager.nixosModules.home-manager
-          inputs.quadlet-nix.nixosModules.quadlet
-        ];
-      };
       nixosConfigurations.excalibur = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/arcanum/excalibur/default.nix
-          inputs.home-manager.nixosModules.home-manager
-          inputs.quadlet-nix.nixosModules.quadlet
+          ./hosts/arcanum/excalibur
         ];
       };
+
+      # A lightweight config for a tesing-system
       nixosConfigurations.voidkey = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/voidkey/default.nix
+          ./hosts/voidkey
         ];
       };
     };

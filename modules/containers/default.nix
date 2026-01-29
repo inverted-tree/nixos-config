@@ -2,7 +2,7 @@
 {
   imports = [
     # ./atuin/default.nix
-    # ./freshrss/deafult.nix
+    ./freshrss
     ./grafana
     # ./homeassistant/default.nix
     # ./pihole/default.nix

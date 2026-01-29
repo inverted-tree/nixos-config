@@ -21,7 +21,11 @@ let
   service = "prometheus";
 in
 {
-  imports = [ ../../podman.nix ];
+  imports = [
+    ../../podman.nix
+    inputs.home-manager.nixosModules.home-manager
+    inputs.quadlet-nix.nixosModules.quadlet
+  ];
 
   options.modules.services.prometheus = {
     enable = lib.mkEnableOption "Prometheus (rootless quadlet container)";
