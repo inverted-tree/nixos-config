@@ -68,8 +68,8 @@ in
                       addr0 = builtins.elemAt osConfig.networking.interfaces.enX0.ipv4.addresses 0;
                     in
                     "http://${addr0.address}:32400";
-                  PUID = toString osConfig.users.users.${service}.uid;
-                  PGID = toString osConfig.users.groups.${service}.gid;
+                  PUID = "0";
+                  PGID = "0";
                 };
 
                 volumes = [
