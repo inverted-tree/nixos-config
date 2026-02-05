@@ -118,6 +118,12 @@ in
       publishPort = 8008;
       cronTime = "*/15";
     };
+
+    glance = {
+      enable = true;
+      publishPort = 8080;
+      configFile = "/srv/glance/config/glance.yml";
+    };
   };
 
   system.stateVersion = "25.05";

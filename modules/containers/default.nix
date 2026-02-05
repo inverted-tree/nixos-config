@@ -3,6 +3,7 @@
   imports = [
     # ./atuin/default.nix
     ./freshrss
+    ./glance
     ./grafana
     # ./homeassistant/default.nix
     # ./pihole/default.nix
