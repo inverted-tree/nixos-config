@@ -6,7 +6,7 @@
     ./glance
     ./grafana
     # ./homeassistant/default.nix
-    # ./pihole/default.nix
+    ./pihole
     # ./plex/default.nix
     ./prometheus
     # ./stump/default.nix

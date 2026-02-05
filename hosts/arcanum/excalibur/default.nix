@@ -119,8 +119,12 @@ in
       cronTime = "*/15";
     };
 
-    glance = {
+    pihole = {
       enable = true;
+    };
+
+    glance = {
+      enable = false;
       publishPort = 8080;
       configFile = "/srv/glance/config/glance.yml";
     };
