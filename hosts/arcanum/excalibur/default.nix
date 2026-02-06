@@ -124,7 +124,7 @@ in
     };
 
     glance = {
-      enable = false;
+      enable = true;
       publishPort = 8080;
       configFile = "/srv/glance/config/glance.yml";
     };
