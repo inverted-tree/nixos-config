@@ -26,7 +26,6 @@ in
     ../../../modules # Service modules
     ../../../modules/containers/homeassistant/homeassistant.nix
     ../../../modules/containers/plex/plex.nix
-    ../../../modules/containers/stump/stump.nix
   ];
 
   sops = {
@@ -136,6 +135,11 @@ in
     grafana = {
       enable = true;
       publishPort = 3000;
+    };
+
+    stump = {
+      enable = true;
+      publishPort = 10801;
     };
   };
 

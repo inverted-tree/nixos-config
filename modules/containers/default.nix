@@ -9,6 +9,6 @@
     ./pihole
     # ./plex/default.nix
     ./prometheus
-    # ./stump/default.nix
+    ./stump
   ];
 }
