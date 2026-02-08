@@ -11,23 +11,19 @@
 # - Persists state on the host under /srv/grafana
 #
 # Upstream documentation:
-# https://grafana.com/docs/
+# - https://grafana.com/docs/
 
 { lib, config, ... }@args:
 let
   inherit (args) inputs;
 
-  conf = config.modules.services.grafana;
+  conf = config.modules.containers.grafana;
   service = "grafana";
 in
 {
-  imports = [
-    ../../podman.nix
-    inputs.home-manager.nixosModules.home-manager
-    inputs.quadlet-nix.nixosModules.quadlet
-  ];
+  imports = [ ../../podman.nix ];
 
-  options.modules.services.grafana = {
+  options.modules.containers.grafana = {
     enable = lib.mkEnableOption "Grafana (rootless quadlet container)";
 
     publishPort = lib.mkOption {
@@ -36,9 +32,9 @@ in
       description = ''
         TCP port on which Grafana will be exposed on the host.
 
-            This port is:
-            - opened in the host firewall
-            - published to the container as port 3000
+        This port is:
+        - opened in the host firewall
+        - published to the container as port 3000
       '';
     };
   };
@@ -81,10 +77,8 @@ in
 
                 containerConfig = {
                   image = "docker.io/grafana/grafana:latest";
-                  volumes = [
-                    "/srv/${service}:/var/lib/grafana:idmap"
-                  ];
-                  user = "0";
+                  volumes = [ "/srv/${service}:/var/lib/grafana:idmap" ];
+                  user = "0:0";
                   networks = [ "host" ];
                   publishPorts = [ "${toString conf.publishPort}:3000" ];
                 };
@@ -95,10 +89,8 @@ in
                 };
               };
             };
-
             autoEscape = true; # Automatically escape characters
           };
-
         home.stateVersion = "25.11";
       };
   };

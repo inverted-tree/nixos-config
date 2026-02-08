@@ -97,11 +97,6 @@ in
   };
 
   modules.services = {
-    grafana = {
-      enable = true;
-      publishPort = 3000;
-    };
-
     prometheus = {
       enable = true;
       publishPort = 9090;
@@ -136,6 +131,11 @@ in
       enable = true;
       publishPort = 8080;
       configFile = "/srv/glance/glance.yml";
+    };
+
+    grafana = {
+      enable = true;
+      publishPort = 3000;
     };
   };
 
