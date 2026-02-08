@@ -116,12 +116,6 @@ in
     pihole = {
       enable = true;
     };
-
-    glance = {
-      enable = true;
-      publishPort = 8080;
-      configFile = "/srv/glance/config/glance.yml";
-    };
   };
 
   modules.containers = {
@@ -136,6 +130,12 @@ in
       enable = true;
       publishPort = 8008;
       cronTime = "*/15";
+    };
+
+    glance = {
+      enable = true;
+      publishPort = 8080;
+      configFile = "/srv/glance/glance.yml";
     };
   };
 

@@ -10,13 +10,13 @@
 # - Needs a config file named glance.yml
 #
 # Upstream documentation:
-# https://github.com/glanceapp/glance
+# - https://github.com/glanceapp/glance
 
 { lib, config, ... }@args:
 let
   inherit (args) inputs;
 
-  conf = config.modules.services.glance;
+  conf = config.modules.containers.glance;
   service = "glance";
 in
 {
@@ -25,7 +25,7 @@ in
     inputs.quadlet-nix.nixosModules.quadlet
   ];
 
-  options.modules.services.glance = {
+  options.modules.containers.glance = {
     enable = lib.mkEnableOption "Glance (rootless quadlet container)";
 
     publishPort = lib.mkOption {
@@ -42,8 +42,8 @@ in
 
     configFile = lib.mkOption {
       type = lib.types.str;
-      default = "/srv/glance/config/glance.yml";
-      example = "/srv/glance/config/glance.yml";
+      default = "/srv/glance/glance.yml";
+      example = "/srv/glance/glance.yml";
       description = ''
         Path to the Glance configuration file on the host.
 
@@ -67,7 +67,6 @@ in
 
     systemd.tmpfiles.rules = [
       "d /srv/${service} 0750 ${service} podman - -"
-      "d /srv/${service}/config 0750 ${service} podman - -"
     ];
 
     networking.firewall.allowedTCPPorts = [ conf.publishPort ];
@@ -94,8 +93,7 @@ in
                 containerConfig = {
                   image = "docker.io/glanceapp/glance:latest";
                   volumes = [
-                    "/srv/${service}/config:/app/config:idmap"
-                    "${conf.configFile}:/app/config/glance.yml:rw"
+                    "${conf.configFile}:/app/config/glance.yml:ro"
                   ];
                   networks = [ "podman" ];
                   publishPorts = [ "${toString conf.publishPort}:8080" ];
