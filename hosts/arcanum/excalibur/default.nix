@@ -130,5 +130,14 @@ in
     };
   };
 
+  modules.containers = {
+    atuin = {
+      enable = true;
+      publishPort = 8888;
+      configFile = "/srv/atuin/server.toml";
+      openRegistration = true;
+    };
+  };
+
   system.stateVersion = "25.05";
 }

@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    # ./atuin/default.nix
+    ./atuin
     ./freshrss
     ./glance
     ./grafana
