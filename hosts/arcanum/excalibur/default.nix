@@ -83,7 +83,9 @@ in
         AllowUsers = [ "lukas" ];
       };
     };
+
     tailscale.enable = true;
+
     zfs = {
       autoScrub.enable = true;
       autoSnapshot.enable = true;
@@ -96,12 +98,6 @@ in
   };
 
   modules.services = {
-    prometheus = {
-      enable = true;
-      publishPort = 9090;
-      configFile = "/srv/prometheus/prometheus.yml";
-    };
-
     prometheus-node-exporter = {
       enable = true;
       publishPort = 9100;
@@ -135,6 +131,12 @@ in
 
     pihole = {
       enable = true;
+    };
+
+    prometheus = {
+      enable = true;
+      publishPort = 9090;
+      configFile = "/srv/prometheus/prometheus.yml";
     };
 
     stump = {

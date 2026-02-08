@@ -11,23 +11,19 @@
 # - Persists time-series data on the host under /srv/prometheus
 #
 # Upstream documentation:
-# https://prometheus.io/docs/
+# - https://prometheus.io/docs/
 
 { lib, config, ... }@args:
 let
   inherit (args) inputs;
 
-  conf = config.modules.services.prometheus;
+  conf = config.modules.containers.prometheus;
   service = "prometheus";
 in
 {
-  imports = [
-    ../../podman.nix
-    inputs.home-manager.nixosModules.home-manager
-    inputs.quadlet-nix.nixosModules.quadlet
-  ];
+  imports = [ ../../podman.nix ];
 
-  options.modules.services.prometheus = {
+  options.modules.containers.prometheus = {
     enable = lib.mkEnableOption "Prometheus (rootless quadlet container)";
 
     publishPort = lib.mkOption {
@@ -100,7 +96,7 @@ in
                     "/srv/${service}/data:/prometheus:idmap"
                     "${conf.configFile}:/etc/prometheus/prometheus.yml:ro"
                   ];
-                  user = "0";
+                  user = "0:0";
                   networks = [ "host" ];
                   publishPorts = [ "${toString conf.publishPort}:9090" ];
                 };
@@ -111,10 +107,8 @@ in
                 };
               };
             };
-
             autoEscape = true; # Automatically escape characters
           };
-
         home.stateVersion = "25.11";
       };
   };
