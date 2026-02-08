@@ -11,13 +11,13 @@
 # - Persists state on the host under /srv/pihole
 #
 # Upstream documentation:
-# https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker
+# - https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker
 
 { lib, config, ... }@args:
 let
   inherit (args) inputs;
 
-  conf = config.modules.services.pihole;
+  conf = config.modules.containers.pihole;
   service = "pihole";
 in
 {
@@ -26,7 +26,7 @@ in
     inputs.sops-nix.nixosModules.sops
   ];
 
-  options.modules.services.pihole = {
+  options.modules.containers.pihole = {
     enable = lib.mkEnableOption "PiHole (rootless quadlet container)";
 
     timeZone = lib.mkOption {
@@ -113,10 +113,8 @@ in
                 };
               };
             };
-
             autoEscape = true; # Automatically escape characters
           };
-
         home.stateVersion = "25.11";
       };
   };

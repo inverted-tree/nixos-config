@@ -106,10 +106,6 @@ in
       enable = true;
       publishPort = 9100;
     };
-
-    pihole = {
-      enable = true;
-    };
   };
 
   modules.containers = {
@@ -135,6 +131,10 @@ in
     grafana = {
       enable = true;
       publishPort = 3000;
+    };
+
+    pihole = {
+      enable = true;
     };
 
     stump = {
