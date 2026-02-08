@@ -11,13 +11,13 @@
 # - Persists state on the host under /srv/freshrss
 #
 # Upstream documentation:
-# https://www.freshrss.org/
+# - https://www.freshrss.org/
 
 { lib, config, ... }@args:
 let
   inherit (args) inputs;
 
-  conf = config.modules.services.freshrss;
+  conf = config.modules.containers.freshrss;
   service = "freshrss";
 in
 {
@@ -26,7 +26,7 @@ in
     inputs.sops-nix.nixosModules.sops
   ];
 
-  options.modules.services.freshrss = {
+  options.modules.containers.freshrss = {
     enable = lib.mkEnableOption "FreshRSS (rootless quadlet container)";
 
     publishPort = lib.mkOption {
@@ -114,15 +114,15 @@ in
                 containerConfig = {
                   image = "docker.io/freshrss/freshrss";
                   environments = {
-                    TZ = "Europe/Berlin";
+                    TZ = "${conf.timeZone}";
                     CRON_MIN = "${toString conf.cronTime}";
                   };
                   environmentFiles = [ "${secrets.freshrssEnv.path}" ];
+                  user = "0:0";
                   volumes = [
                     "/srv/${service}/data:/var/www/FreshRSS/data:rw,U"
                     "/srv/${service}/extensions:/var/www/FreshRSS/extensions:rw,U"
                   ];
-                  user = "0:0";
                   networks = [ "podman" ];
                   publishPorts = [ "${toString conf.publishPort}:80/tcp" ];
                 };
@@ -133,10 +133,8 @@ in
                 };
               };
             };
-
             autoEscape = true; # Automatically escape characters
           };
-
         home.stateVersion = "25.11";
       };
   };

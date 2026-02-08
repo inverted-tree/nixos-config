@@ -113,12 +113,6 @@ in
       publishPort = 9100;
     };
 
-    freshrss = {
-      enable = true;
-      publishPort = 8008;
-      cronTime = "*/15";
-    };
-
     pihole = {
       enable = true;
     };
@@ -136,6 +130,12 @@ in
       publishPort = 8888;
       configFile = "/srv/atuin/server.toml";
       openRegistration = true;
+    };
+
+    freshrss = {
+      enable = true;
+      publishPort = 8008;
+      cronTime = "*/15";
     };
   };
 
