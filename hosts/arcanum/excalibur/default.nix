@@ -65,12 +65,36 @@ in
       "1.0.0.1"
       "100.100.100.100"
     ];
+    firewall.allowedTCPPorts = [ 9558 ];
   };
 
   environment.systemPackages = with pkgs; [
     sops
     tailscale
   ];
+
+  systemd.user.services.prometheus-systemd-exporter = {
+    enable = true;
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    # wantedBy = [ "default.target" ];
+    description = "Prometheus systemd exporter for user services.";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = ''
+        ${pkgs.prometheus-systemd-exporter}/bin/systemd_exporter \
+          --web.listen-address=0.0.0.0:9559 \
+          --systemd.collector.user
+      '';
+      Restart = "on-failure";
+
+      # # Ensure the exporter can find the per-user D-Bus + runtime dir.
+      # Environment = [
+      #   "XDG_RUNTIME_DIR=%t"
+      #   "DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus"
+      # ];
+    };
+  };
 
   services = {
     openssh = {
