@@ -27,7 +27,6 @@
       clippy
       fastfetch
       fzf
-      fzf-zsh
       git
       lazygit
       luarocks
