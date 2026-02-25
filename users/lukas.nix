@@ -16,6 +16,7 @@
       "podman"
       "syncthing"
     ];
+    linger = true; # Required for the services start automatically without login
     shell = pkgs.zsh;
     packages = with pkgs; [
       atuin
